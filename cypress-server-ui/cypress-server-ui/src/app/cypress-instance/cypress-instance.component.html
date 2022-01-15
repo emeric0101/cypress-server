@@ -1,0 +1,37 @@
+<div class="p-grid" *ngIf="instance">
+  <div class="p-col-12">
+    {{instance.test ? instance.test : 'All'}}
+  </div>
+  <div class="p-col-6 p-grid">
+    <div class="p-col-fixed">Started : </div>
+    <div>{{instance.started}}</div>
+  </div>
+  <div class="p-col-6 p-grid">
+    <div class="p-col-fixed">End : </div>
+    <div>{{instance.ended}}</div>
+  </div>
+  <div class="p-col-12">
+    {{instance.running ? "RUNNING" : "ENDED"}}
+    <ng-container *ngIf="!instance.running">
+          <span class="failure" *ngIf="instance.failure; else success;">
+      With failures
+    </span>
+    </ng-container>
+
+    <ng-template #success>
+          <span class="success">
+      SUCCESS
+    </span>
+    </ng-template>
+
+  </div>
+  <div class="p-col-12">
+    <p-accordion [multiple]="true">
+      <p-accordionTab header="Results">
+        <div *ngFor="let row of instance.result">
+          {{row}}
+        </div>
+      </p-accordionTab>
+    </p-accordion>
+  </div>
+</div>

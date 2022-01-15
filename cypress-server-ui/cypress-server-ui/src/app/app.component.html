@@ -1,0 +1,38 @@
+<div class="header">
+  <div class="logo">
+    <img src="assets/logo.png" width="42"/>
+  </div>
+  <span class="title">Cypress Open Server
+        <span class="version">v1.0PREVIEW</span>
+    </span>
+</div>
+<div class="main-wrapper">
+  <div class="nav">
+    <div class="menu-row">
+      <a href="#/" class="menu-link">
+        <div class="menu-icon">
+          <i class="pi pi-home"></i>
+        </div>
+        <div class="menu-label">
+          Home
+        </div>
+      </a>
+
+    </div>
+  </div>
+  <div class="router-wrapper">
+    <div>
+      <button pButton (click)="startAll()" label="Start All tests"></button>
+      <button pButton (click)="clear()" label="Clear"></button>
+    </div>
+    <div class="instances-wrapper">
+      <div class="instance-wrapper" *ngFor="let instance of instances;">
+        <app-cypress-instance [instance]="instance"></app-cypress-instance>
+      </div>
+    </div>
+    <app-test-list (onStart)="start($event);"></app-test-list>
+  </div>
+</div>
+
+
+<pre style="text-align:center;">Emeric BAVEUX</pre>

@@ -1,0 +1,85 @@
+/* You can add global styles to this file, and also import other style files */
+
+.header {
+  height: 64px;
+  background-color: #252724;
+  padding-left: 5px;
+  color: lightgray;
+  display: flex;
+  align-items: center;
+  box-shadow: 2px 0px 7px lightcoral;
+}
+
+.header > .title {
+  font-size: 22px;
+  margin-left: 5px;
+  font-weight: 300;
+}
+
+.version {
+  margin-left: 5px;
+  font-size: 15px;
+  color: darkgray;
+}
+
+.main-wrapper {
+  display: flex;
+}
+
+.router-wrapper {
+  margin: 10px;
+  width: 100%;
+}
+
+.nav {
+  flex: 0 0 auto;
+  width: 150px;
+  height: calc(100vh - 64px);
+  box-shadow: 2px 0 5px -4px lightcoral;
+
+}
+
+.menu-link {
+  display: flex;
+  height: 30px;
+  font-size: 1.5rem;
+  color: #343a45;
+  margin: 5px;
+
+  font-weight: 300;
+  font-size: 16px;
+  padding: 16px;
+}
+
+.menu-row {
+  margin-top: 10px;
+}
+
+.menu-link > div {
+  padding: 5px;
+}
+
+.menu-link > .menu-icon {
+  color: #bcbcbc;
+}
+
+a.menu-link {
+  text-decoration: none;
+}
+
+
+.logo {
+  float: left;
+  margin: 0 5px;
+}
+
+.instance-wrapper {
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px lightgrey;
+  border: 1px solid lightgrey;
+  padding: 5px;
+}
+
+.instances-wrapper {
+  padding: 5px;
+}
