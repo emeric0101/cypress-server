@@ -28,9 +28,9 @@ public class ProcessManagerService {
      *
      * @param instance null for all
      */
-    public void stopProcess(CypressInstance instance) {
+    public void stopProcess(String project, CypressInstance instance) {
         if (instance == null) {
-            cypressInstances.stream().forEach(this::stopProcess);
+            cypressInstances.stream().filter(e -> project.equals(e.getProject())).forEach(e -> stopProcess(project, instance));
         } else {
             ProcessHelper.stop(instance.getProcess());
         }
@@ -40,10 +40,10 @@ public class ProcessManagerService {
      * Return instance
      * @return
      */
-    public List<CypressInstanceDTO> getInstances() {
+    public List<CypressInstanceDTO> getInstances(String project) {
         try {
             semaphore.acquire();
-            return cypressInstances.stream().map(e -> {
+            return cypressInstances.stream().filter(e -> project.equals(e.getProject())).map(e -> {
                 CypressInstanceDTO instanceDTO = new CypressInstanceDTO();
                 instanceDTO.setId(e.getId());
                 instanceDTO.setFailure(e.isFailure());
@@ -51,6 +51,7 @@ public class ProcessManagerService {
                 instanceDTO.setStarted(e.getStarted());
                 instanceDTO.setTest(e.getTest());
                 instanceDTO.setEnded(e.getEnded());
+                instanceDTO.setProject(e.getProject());
                 if (e.getResult() != null) {
                     instanceDTO.setResult(e.getResult().stream().collect(Collectors.toList()));
 
@@ -70,24 +71,21 @@ public class ProcessManagerService {
      * @Param test null for all
      * @return
      */
-    public CypressInstance startProcess(String executablePath, String projectPath, String configFilePath, String test) {
+    public CypressInstance startProcess(String project, String executablePath, String projectPath, String configFilePath, String test) {
         CypressInstance instance = new CypressInstance();
         instance.setId(idSequence++);
         instance.setStarted(LocalDateTime.now());
         instance.setTest(test);
         instance.setRunning(true);
+        instance.setProject(project);
 
 
         String configFile = configFilePath;
-        String project = projectPath;
         String spec = "";
-        if (test != null) {
-            spec = "--spec ../childneo-front/cypress/integration/brakcet/create-bracket.S1202.spec.js";
-        }
 
         String cypressStartCommand = executablePath + File.separator + "node_modules" + File.separator + ".bin" + File.separator
                 + "cypress.cmd run --config-file " + configFile +
-                " --project " + project + " " +
+                " --project " + projectPath + " " +
                 spec;
         var cmds = cypressStartCommand.split(" ");
         log.info(Arrays.stream(cmds).collect(Collectors.joining(" ")));
@@ -149,10 +147,10 @@ public class ProcessManagerService {
     /**
      * Clear all not running instances
      */
-    public void clear() {
+    public void clear(String project) {
         try {
             semaphore.acquire();
-            cypressInstances = cypressInstances.stream().filter(e -> e.isRunning()).collect(Collectors.toList());
+            cypressInstances = cypressInstances.stream().filter(e -> !project.equals(e.getProject()) || e.isRunning()).collect(Collectors.toList());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {

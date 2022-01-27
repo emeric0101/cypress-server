@@ -12,30 +12,31 @@ import org.springframework.web.bind.annotation.*;
 public class CypressController {
     final CypressService cypressService;
 
-    @GetMapping("state")
-    public CypressStateDTO state() {
-        return cypressService.getState();
+    @GetMapping("{project}/state")
+    public CypressStateDTO state(@PathVariable("project") final String project) {
+        return cypressService.getState(project);
     }
 
 
-    @GetMapping("stop")
-    public void stop() {
-        cypressService.stop();
+    @GetMapping("{project}/stop")
+    public void stop(@PathVariable("project") final String project) {
+        cypressService.stop(project);
     }
 
-    @GetMapping("start/all")
-    public void startAll() {
-        cypressService.startAll();
+    @GetMapping("{project}/start/all")
+    public void startAll(@PathVariable("project") final String project) {
+        cypressService.startAll(project);
     }
 
-    @GetMapping("start/{test}")
-    public void startTest(@PathVariable("test") final String test) {
-        cypressService.start(test);
+    @GetMapping("{project}/start/{test}")
+    public void startTest(@PathVariable("project") final String project, @PathVariable("test") final String test) {
+        cypressService.start(project, test);
     }
 
-    @GetMapping("clear")
-    public void clear() {
-        cypressService.clear();
+    @GetMapping("{project}/clear")
+    public void clear(@PathVariable("project") final String project) {
+        cypressService.clear(project);
     }
+
 
 }

@@ -27,22 +27,24 @@ export class CypressService {
     private httpClient: HttpClient
   ) { }
 
-  public getState() {
-    return lastValueFrom(this.httpClient.get<State>(environment.serverUrl + "/cypress/state"));
+  public getState(project: string) {
+    return lastValueFrom(this.httpClient.get<State>(environment.serverUrl + "/cypress/" + project + "/state"));
   }
 
-  public startAll() {
-    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/cypress/start/all"));
+  public startAll(project: string) {
+    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/cypress/" + project + "/start/all"));
   }
 
-  public start(test: string) {
-    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/cypress/start/" + test));
+  public start(project: string, test: string) {
+    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/" + project + "/cypress/start/" + test));
   }
-  public stop() {
-    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/cypress/stop"));
+  public stop(project: string) {
+    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/" + project + "/cypress/stop"));
   }
 
-  async clear() {
-    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/cypress/clear"));
+  async clear(project: string) {
+    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/" + project + "/cypress/clear"));
   }
+
+
 }

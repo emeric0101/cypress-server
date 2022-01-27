@@ -21,16 +21,18 @@
     </div>
   </div>
   <div class="router-wrapper">
-    <div>
+    <div class="btn-bar">
       <button pButton (click)="startAll()" label="Start All tests"></button>
       <button pButton (click)="clear()" label="Clear"></button>
+      <button pButton (click)="refresh()" label="Refresh"></button>
+      <p-dropdown [options]="projects"  [(ngModel)]="project" (onChange)="onProjectChanged()"></p-dropdown>
     </div>
-    <div class="instances-wrapper">
+    <div class="instances-wrapper" *ngIf="project">
       <div class="instance-wrapper" *ngFor="let instance of instances;">
         <app-cypress-instance [instance]="instance"></app-cypress-instance>
       </div>
     </div>
-    <app-test-list (onStart)="start($event);"></app-test-list>
+    <app-test-list [tests]="testsForProject" (onStart)="start($event);"></app-test-list>
   </div>
 </div>
 

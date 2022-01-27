@@ -7,6 +7,7 @@ import {State} from "./cypress.service";
 
 export interface Test {
   name: string;
+  project: string;
 }
 
 @Injectable({

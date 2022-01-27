@@ -9,6 +9,7 @@ import {CypressInstance} from "../cypress.service";
 export class CypressInstanceComponent implements OnInit {
 
   @Input() instance: CypressInstance | null = null;
+  @Input() project: string | null = null;
   constructor() { }
 
   ngOnInit(): void {

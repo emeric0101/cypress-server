@@ -1,10 +1,12 @@
 package fr.emeric0101.cypressserver.services.process;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.function.Consumer;
 
 @Slf4j
@@ -13,6 +15,9 @@ public class BufferThreadManager {
     Thread bufferThread;
     Consumer<Integer> endCallback;
     Consumer<String> outputCallback;
+
+    @Value("${cypress.encoding}")
+    private String ENCODING;
 
     public BufferThreadManager(Process process, Consumer<Integer> endCallback, Consumer<String> outputCallback) {
         this.process = process;
@@ -30,7 +35,13 @@ public class BufferThreadManager {
     }
 
     private void fetchBuffer() {
-        BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        BufferedReader input = null;
+        try {
+            input = new BufferedReader(new InputStreamReader(process.getInputStream(), ENCODING));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return;
+        }
 
         while (process.isAlive()) {
             try {

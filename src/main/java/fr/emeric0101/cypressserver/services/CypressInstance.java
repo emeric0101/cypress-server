@@ -8,5 +8,6 @@ import lombok.Data;
 public class CypressInstance extends CypressInstanceDTO {
     private Integer id;
     private Process process;
+    private String project;
 
 }

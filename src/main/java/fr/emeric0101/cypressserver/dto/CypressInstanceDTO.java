@@ -15,4 +15,5 @@ public class CypressInstanceDTO {
     private LocalDateTime ended;
     private boolean failure;
     private String test;
+    private String project;
 }

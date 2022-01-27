@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Test, TestServiceService} from "../test-service.service";
 
 @Component({
@@ -7,16 +7,14 @@ import {Test, TestServiceService} from "../test-service.service";
   styleUrls: ['./test-list.component.css']
 })
 export class TestListComponent implements OnInit {
-  tests: Test[] = [];
+  @Input() tests: Test[] = [];
 
   @Output() onStart = new EventEmitter<Test>();
 
   constructor(
-    private testService: TestServiceService
   ) { }
 
   async ngOnInit() {
-    this.tests = await this.testService.getTests();
   }
 
   start(test: any) {

@@ -11,16 +11,30 @@ import java.util.stream.Collectors;
 
 @Service
 public class TestService {
-    @Value("${project.path}")
-    private String projectPath;
+    @Value("${projects.path}")
+    private String projectsPath;
 
     public List<TestDTO> findAll() {
+        List<TestDTO> tests = new LinkedList<>();
         // fetch all cypress test
-        File cypressPath = new File(projectPath + File.separator + "cypress" + File.separator + "integration");
-        var testFiles = findTest(cypressPath);
-        return testFiles.stream().map(e -> new TestDTO(e.getName(),
-                e.getAbsolutePath().replace(cypressPath.getAbsolutePath(), "")
-        )).collect(Collectors.toList());
+        File cypressProjectPath = new File(projectsPath);
+        if (!cypressProjectPath.exists()) {
+            return List.of();
+        }
+        // search for project
+        for (var project: cypressProjectPath.listFiles()) {
+            if (!project.isDirectory()) {
+                continue;
+            }
+            // search for test in project
+            File cypressPath = new File(project.getAbsolutePath() + File.separator + "cypress" + File.separator + "integration");
+            var testFiles = findTest(cypressPath);
+            tests.addAll(testFiles.stream().map(e -> new TestDTO(e.getName(),
+                    e.getAbsolutePath().replace(cypressPath.getAbsolutePath(), ""),
+                    project.getName()
+            )).collect(Collectors.toList()));
+        }
+        return tests;
     }
 
     /**

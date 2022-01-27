@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -14,39 +15,46 @@ public class CypressService {
     @Value("${cypress.project-npm-path}")
     private String npmPath;
 
-    @Value("${project.path}")
-    private String projectPath;
+    @Value("${projects.path}")
+    private String projectsPath;
 
-    @Value("${project.config-file.path}")
-    private String configFilePath;
+    private String configFilename = "cypress.json";
+
 
     private final ProcessManagerService processManagerService;
     /**
      * Return all cypress instances
      * @return
+     * @param project
      */
-    public CypressStateDTO getState() {
-        return new CypressStateDTO(processManagerService.getInstances());
+    public CypressStateDTO getState(String project) {
+        return new CypressStateDTO(processManagerService.getInstances(project));
     }
 
 
-    public void stop() {
-        processManagerService.stopProcess(null);
+    public void stop(String project) {
+        processManagerService.stopProcess(project, null);
     }
 
-    public void startAll() {
-        processManagerService.startProcess(npmPath, projectPath,configFilePath,  null);
+    public void startAll(String project) {
+        processManagerService.startProcess(project, npmPath, getProjectPath(project), configFilename,  null);
     }
 
-    public void start(String test) {
-        processManagerService.startProcess(npmPath, projectPath,configFilePath,  test);
+    public void start(String project, String test) {
+        processManagerService.startProcess(project, npmPath, getProjectPath(project), configFilename, test);
 
+    }
+
+    private String getProjectPath(String project) {
+        return projectsPath + File.separator + project;
     }
 
     /**
      * Clear all not running instance
+     * @param project
      */
-    public void clear() {
-        processManagerService.clear();
+    public void clear(String project) {
+        processManagerService.clear(project);
     }
+
 }

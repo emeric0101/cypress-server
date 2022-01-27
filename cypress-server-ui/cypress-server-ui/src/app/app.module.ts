@@ -10,6 +10,8 @@ import { CypressInstanceComponent } from './cypress-instance/cypress-instance.co
 import {AccordionModule} from "primeng/accordion";
 import {HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {DropdownModule} from "primeng/dropdown";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -17,15 +19,17 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     TestListComponent,
     CypressInstanceComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    TableModule,
-    ButtonModule,
-    AccordionModule,
-    HttpClientModule
-  ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        TableModule,
+        ButtonModule,
+        AccordionModule,
+        HttpClientModule,
+        DropdownModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
