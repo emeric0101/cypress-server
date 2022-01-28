@@ -16,10 +16,10 @@ public class BufferThreadManager {
     Consumer<Integer> endCallback;
     Consumer<String> outputCallback;
 
-    @Value("${cypress.encoding}")
-    private String ENCODING;
+    String encoding;
 
-    public BufferThreadManager(Process process, Consumer<Integer> endCallback, Consumer<String> outputCallback) {
+    public BufferThreadManager(String encoding, Process process, Consumer<Integer> endCallback, Consumer<String> outputCallback) {
+        this.encoding = encoding;
         this.process = process;
         this.bufferThread = new Thread(() -> fetchBuffer());
         this.endCallback = endCallback;
@@ -28,6 +28,7 @@ public class BufferThreadManager {
 
     public void start() {
         this.bufferThread.start();
+        outputCallback.accept("Console output thread started");
     }
 
     public void stop() {
@@ -37,8 +38,9 @@ public class BufferThreadManager {
     private void fetchBuffer() {
         BufferedReader input = null;
         try {
-            input = new BufferedReader(new InputStreamReader(process.getInputStream(), ENCODING));
+            input = new BufferedReader(new InputStreamReader(process.getInputStream(), encoding));
         } catch (UnsupportedEncodingException e) {
+            outputCallback.accept("Unable to fetch console output : " + e.getMessage());
             e.printStackTrace();
             return;
         }

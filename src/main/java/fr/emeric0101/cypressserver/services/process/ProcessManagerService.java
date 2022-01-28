@@ -19,6 +19,10 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ProcessManagerService {
+
+    @Value("${cypress.encoding}")
+    private String encoding;
+
     public static Integer idSequence = 1;
 
     Collection<CypressInstance> cypressInstances = new ConcurrentLinkedDeque<CypressInstance>();
@@ -96,7 +100,7 @@ public class ProcessManagerService {
         pb.redirectErrorStream(true);
         try {
              var process = pb.start();
-            BufferThreadManager bufferThreadManager = new BufferThreadManager(process, (retval) -> {
+            BufferThreadManager bufferThreadManager = new BufferThreadManager(encoding, process, (retval) -> {
 
             }, (output)-> {
                 log.info(output);

@@ -36,14 +36,14 @@ export class CypressService {
   }
 
   public start(project: string, test: string) {
-    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/" + project + "/cypress/start/" + test));
+    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/cypress/" + project + "/start/" + test));
   }
   public stop(project: string) {
-    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/" + project + "/cypress/stop"));
+    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/cypress/" + project + "/stop"));
   }
 
   async clear(project: string) {
-    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/" + project + "/cypress/clear"));
+    return lastValueFrom(this.httpClient.get(environment.serverUrl + "/cypress/" + project + "/clear"));
   }
 
 
